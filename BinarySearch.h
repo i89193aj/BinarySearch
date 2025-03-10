@@ -41,11 +41,23 @@ public:
     int Leetcode_Sol_704(std::vector<int>& nums, int target, int _solution);
     int BinarySearch_704(std::vector<int>& nums, int target);
 
-    int Leetcode_Sol_35(std::vector<int>& nums, int target, int _solution);
+    int Leetcode_Sol_35(std::vector<int>& numsD, int target, int _solution);
     int BinarySearch_35(std::vector<int>& nums, int target);
 
-    int Leetcode_Sol_33(std::vector<int>& nums, int target, int _solution);
-    int BinarySearch_33(std::vector<int>& nums, int target);
+    int Leetcode_Sol_153(std::vector<int>& nums, int _solution);
+    int BinarySearch_153(std::vector<int>& nums);
+
+    std::vector<int> Leetcode_Sol_34(std::vector<int>& nums, int target, int _solution);//*****
+    std::vector<int> BinarySearch_34(std::vector<int>& nums, int target);
+    std::vector<int> DoubleBinarySearch_34(std::vector<int>& nums, int target);//*****
+    std::vector<int> Mylower_bound_34(std::vector<int>& nums, int target);//*****
+    std::vector<int> stdlower_bound_34(std::vector<int>& nums, int target);
+
+    int Leetcode_Sol_33(std::vector<int>& numsD, int target, int _solution);
+    int DoubleBinarySearch_33(std::vector<int>& nums, int target);
+    int OnceBinarySearch_33(std::vector<int>& nums, int target);//*****(相當於Trapping Rain Water那題)
+
+
     // ======= Leetcode Solutions =======
 
 };
