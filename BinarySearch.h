@@ -41,7 +41,7 @@ public:
     int Leetcode_Sol_704(std::vector<int>& nums, int target, int _solution);
     int BinarySearch_704(std::vector<int>& nums, int target);
 
-    int Leetcode_Sol_35(std::vector<int>& numsD, int target, int _solution);
+    int Leetcode_Sol_35(std::vector<int>& nums, int target, int _solution);
     int BinarySearch_35(std::vector<int>& nums, int target);
 
     int Leetcode_Sol_33(std::vector<int>& nums, int target, int _solution);
@@ -82,6 +82,30 @@ public:
 
     int Leetcode_Sol_154(std::vector<int>& nums, int _solution);
     int BinarySearch_154(std::vector<int>& nums);
+
+    int Leetcode_Sol_875(std::vector<int>& piles, int h, int _solution);//*****
+    int BinarySearch_1_875(std::vector<int>& piles, int h);
+    int BinarySearch_2_875(std::vector<int>& piles, int h);
+
+    int Leetcode_Sol_1011(std::vector<int>& weights, int days, int _solution);//*****
+    int BinarySearch_1_1011(std::vector<int>& weights, int days);
+    int BinarySearch_2_1011(std::vector<int>& weights, int days);
+
+    int Leetcode_Sol_1283(std::vector<int>& nums, int threshold, int _solution);
+    int BinarySearch_1_1283(std::vector<int>& nums, int threshold);
+    int BinarySearch_2_1283(std::vector<int>& nums, int threshold);
+
+    int Leetcode_Sol_410(std::vector<int>& nums, int k, int _solution);
+    int BinarySearch_1_410(std::vector<int>& nums, int k);
+    int BinarySearch_2_410(std::vector<int>& nums, int k);
+    int DP_410(std::vector<int>& nums, int k);
+
+    double Leetcode_Sol_4(std::vector<int>& nums1, std::vector<int>& nums2, int _solution);//*****
+    double MergeSortOfDivideandConquer_4(std::vector<int>& nums1, std::vector<int>& nums2);
+    double TwoPointer_4(std::vector<int>& nums1, std::vector<int>& nums2);
+    double BinarySearch_4(std::vector<int>& nums1, std::vector<int>& nums2);
+
+
 
 
     

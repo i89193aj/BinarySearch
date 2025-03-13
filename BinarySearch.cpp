@@ -752,6 +752,376 @@ int BinarySearch::BinarySearch_154(std::vector<int>& nums) {
 
 #pragma endregion
 
+#pragma region 考型四：二分搜尋 on Answer(應用)
+
+#pragma region Leetcode 875. Koko Eating Bananas
+//Leetcode 875. Koko Eating Bananas
+int BinarySearch::Leetcode_Sol_875(std::vector<int>& piles, int h, int _solution) {
+    switch (_solution)
+    {
+    case 1:
+        return BinarySearch_1_875(piles, h);
+    case 2:
+        return BinarySearch_2_875(piles, h);
+    default:
+        return -1; // 確保所有路徑都有回傳值
+    }
+
+    return-1;
+}
+/*確定數值(while(left<right))*/
+int BinarySearch::BinarySearch_1_875(std::vector<int>& piles, int h) {
+    int minvec = 1, maxvec = *max_element(piles.begin(), piles.end());
+    while (minvec < maxvec) {
+        int midvec = (minvec + maxvec) >> 1;
+        long eathour = 0;
+        for (vector<int>::iterator it = piles.begin(); it != piles.end(); ++it)
+            eathour += ((long)*it + midvec - 1) / midvec;
+
+        if (eathour > h) {
+            minvec = midvec + 1;
+        }
+        else {
+            maxvec = midvec;
+        }
+
+    }
+    return minvec;
+}
+/*BinarySearch while(left<=right)*/
+int BinarySearch::BinarySearch_2_875(std::vector<int>& piles, int h) {
+    int left = 1, right = *std::max_element(piles.begin(), piles.end());
+    while (left <= right) {
+        int mid = left + right >> 1;
+        long hoursum = 0;
+        for (auto num : piles)
+            hoursum += ((long)num + mid - 1) / mid;
+
+        if (hoursum > h)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return left;
+}
+#pragma endregion
+
+#pragma region Leetcode 1011. Capacity To Ship Packages Within D Days
+//Leetcode 1011. Capacity To Ship Packages Within D Days
+int BinarySearch::Leetcode_Sol_1011(std::vector<int>& weights, int days, int _solution) {
+    switch (_solution)
+    {
+    case 1:
+        return BinarySearch_1_1011(weights, days);
+    case 2:
+        return BinarySearch_2_1011(weights, days);
+    default:
+        return -1; // 確保所有路徑都有回傳值
+    }
+
+    return-1;
+}
+/*確定數值(while(left<right)) + Greedy*/
+int BinarySearch::BinarySearch_1_1011(std::vector<int>& weights, int days) {
+    int left = *std::max_element(weights.begin(), weights.end());
+    int right = std::accumulate(weights.begin(), weights.end(), 0);
+    auto canload = [](vector<int>& weights, int days, int weight) {
+        int sum = 0, day = 1;
+        for (std::vector<int>::iterator it = weights.begin(); it != weights.end(); ++it)
+            if (sum + *it > weight) {
+                day++;
+                sum = *it; //錯誤：sum = 0;
+            }
+            else {
+                sum += *it;
+            }
+
+        return day > days ? false : true;
+        };
+    while (left < right) {
+        int mid = left + right >> 1;
+
+        if (!canload(weights, days, mid))
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    return left;
+}
+/*BinarySearch while(left<=right) + Greedy*/
+int BinarySearch::BinarySearch_2_1011(std::vector<int>& weights, int days) {
+    int left = *std::max_element(weights.begin(), weights.end());
+    int right = std::accumulate(weights.begin(), weights.end(), 0);
+    auto canload = [](vector<int>& weights, int days, int weight) {
+        int sum = 0, day = 1;
+        for (std::vector<int>::iterator it = weights.begin(); it != weights.end(); ++it)
+            if (sum + *it > weight) {
+                day++;
+                sum = *it; //錯誤：sum = 0;
+            }
+            else {
+                sum += *it;
+            }
+
+        return day > days ? false : true;
+        };
+    while (left <= right) {
+        int mid = left + right >> 1;
+
+        if (!canload(weights, days, mid))
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return left;
+}
+#pragma endregion
+
+#pragma region Leetcode 1283. Find the Smallest Divisor Given a Threshold
+//Leetcode 1283. Find the Smallest Divisor Given a Threshold
+int BinarySearch::Leetcode_Sol_1283(std::vector<int>& nums, int threshold, int _solution) {
+    switch (_solution)
+    {
+    case 1:
+        return BinarySearch_1_1283(nums, threshold);
+    case 2:
+        return BinarySearch_2_1283(nums, threshold);
+    default:
+        return -1; // 確保所有路徑都有回傳值
+    }
+
+    return-1;
+}
+/*確定數值(while(left<right)) + Greedy*/
+int BinarySearch::BinarySearch_1_1283(std::vector<int>& nums, int threshold) {
+    int left = 1;//錯誤：*std::min_element(nums.begin(),nums.end());
+    int right = *std::max_element(nums.begin(), nums.end());
+
+    auto dividemethod = [](vector<int>& nums, int threshold, int divisor) {
+        int sum = 0;
+        for (auto num : nums)
+            sum += (num + divisor - 1) / divisor;
+
+        return sum > threshold ? false : true;
+        };
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (!dividemethod(nums, threshold, mid))
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    return left;
+}
+/*BinarySearch while(left<=right) + Greedy*/
+int BinarySearch::BinarySearch_2_1283(std::vector<int>& nums, int threshold) {
+    int left = 1;//錯誤：*std::min_element(nums.begin(),nums.end());
+    int right = *std::max_element(nums.begin(), nums.end());
+
+    auto dividemethod = [](vector<int>& nums, int threshold, int divisor) {
+        int sum = 0;
+        for (auto num : nums)
+            sum += (num + divisor - 1) / divisor;
+
+        return sum > threshold ? false : true;
+        };
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (!dividemethod(nums, threshold, mid))
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return left;
+}
+#pragma endregion
+
+#pragma region Leetcode 410. Find the Smallest Divisor Given a Threshold
+//Leetcode 1283. Find the Smallest Divisor Given a Threshold
+int BinarySearch::Leetcode_Sol_410(std::vector<int>& nums, int k, int _solution) {
+    switch (_solution)
+    {
+    case 1:
+        return BinarySearch_1_410(nums, k);
+    case 2:
+        return BinarySearch_2_410(nums, k);
+    case 3:
+        return BinarySearch_2_410(nums, k);
+    default:
+        return -1; // 確保所有路徑都有回傳值
+    }
+
+    return-1;
+}
+/*確定數值(while(left<right)) + Greedy*/
+int BinarySearch::BinarySearch_1_410(std::vector<int>& nums, int k) {
+    int left = *std::max_element(nums.begin(), nums.end());//記得加*
+    int right = std::accumulate(nums.begin(), nums.end(), 0);
+    auto savefor_K = [](vector<int>& nums, int k, int savenum) {
+        int sum = 0, times = 1;
+        for (vector<int>::iterator it = nums.begin(); it != nums.end(); ++it)
+            if (sum + *it > savenum) {
+                times++;
+                sum = *it;
+            }
+            else {
+                sum += *it;
+            }
+        return times > k ? false : true;
+        };//錯誤：記得家;
+
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+
+        if (!savefor_K(nums, k, mid)) left = mid + 1;
+        else right = mid;
+    }
+    return left;
+}
+/*BinarySearch while(left<=right) + Greedy*/
+int BinarySearch::BinarySearch_2_410(std::vector<int>& nums, int k) {
+    int left = *std::max_element(nums.begin(), nums.end());//記得加*
+    int right = std::accumulate(nums.begin(), nums.end(), 0);
+    auto savefor_K = [](vector<int>& nums, int k, int savenum) {
+        int sum = 0, times = 1;
+        for (vector<int>::iterator it = nums.begin(); it != nums.end(); ++it)
+            if (sum + *it > savenum) {
+                times++;
+                sum = *it;
+            }
+            else {
+                sum += *it;
+            }
+        return times > k ? false : true;
+        };//錯誤：記得家;
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (!savefor_K(nums, k, mid)) left = mid + 1;
+        else right = mid - 1;
+    }
+    return left;
+}
+
+int BinarySearch::DP_410(std::vector<int>& nums, int m) {
+    int n = nums.size();
+    vector<vector<long>> dp(n + 1, vector<long>(m + 1, LONG_MAX));
+    vector<long> prefixSum(n + 1, 0);
+
+    // 計算前綴和
+    for (int i = 0; i < n; i++) {
+        prefixSum[i + 1] = prefixSum[i] + nums[i];
+    }
+
+    dp[0][0] = 0;
+
+    for (int j = 1; j <= m; j++) { // j = 子陣列數量
+        for (int i = 1; i <= n; i++) { // i = 前 i 個數字
+            for (int k = 0; k < i; k++) { // k = 最後一段的起點
+                dp[i][j] = min(dp[i][j], max(dp[k][j - 1], prefixSum[i] - prefixSum[k]));
+            }
+        }
+    }
+
+    return dp[n][m];
+}
+#pragma endregion
+
+#pragma region Leetcode 4. Median of Two Sorted Arrays
+//Leetcode 4. Median of Two Sorted Arrays
+double BinarySearch::Leetcode_Sol_4(std::vector<int>& nums1, std::vector<int>& nums2, int _solution) {
+    switch (_solution)
+    {
+    case 1:
+        return MergeSortOfDivideandConquer_4(nums1, nums2);
+    case 2:
+        return TwoPointer_4(nums1, nums2);
+    case 3:
+        return BinarySearch_4(nums1, nums2);
+    default:
+        return -1; // 確保所有路徑都有回傳值
+    }
+
+    return-1;
+}
+
+double BinarySearch::MergeSortOfDivideandConquer_4(std::vector<int>& nums1, vector<int>& nums2) {
+    int isize = nums1.size() + nums2.size();
+    vector<int> sort(isize, 0);
+    int left = 0, right = 0, sort_point = 0;
+
+    while (left < nums1.size() && right < nums2.size()) {
+        if (nums1[left] < nums2[right])
+            sort[sort_point++] = nums1[left++];
+        else
+            sort[sort_point++] = nums2[right++];
+    }
+
+    while (left < nums1.size()) {
+        sort[sort_point++] = nums1[left++];
+    }
+
+    while (right < nums2.size()) {
+        sort[sort_point++] = nums2[right++];
+    }
+
+    return isize & 1 ? sort[isize >> 1] : ((double)sort[isize >> 1] + sort[(isize >> 1) - 1]) / 2.0;
+}
+/*BinarySearch while(left<=right) + Greedy*/
+double BinarySearch::TwoPointer_4(std::vector<int>& nums1, vector<int>& nums2) {
+    int m = nums1.size(), n = nums2.size();
+    int medianIdx = (m + n) / 2;
+    int i = 0, j = 0, count = 0;
+    int curr = 0, prev = 0;
+
+    while (count <= medianIdx) {
+        prev = curr;
+        if (i < m && (j >= n || nums1[i] < nums2[j])) {
+            curr = nums1[i++];
+        }
+        else {
+            curr = nums2[j++];
+        }
+        count++;
+    }
+
+    return (m + n) % 2 == 1 ? curr : (prev + curr) / 2.0;
+}
+
+double BinarySearch::BinarySearch_4(std::vector<int>& nums1, vector<int>& nums2) {
+    if (nums1.size() > nums2.size()) return BinarySearch_4(nums2, nums1);
+
+    int m = nums1.size(), n = nums2.size();
+    int left = 0, right = m, partitionX;
+
+    while (left <= right) {
+        partitionX = left + (right - left) / 2;
+        int partitionY = (m + n + 1) / 2 - partitionX;
+
+        int maxLeftX = (partitionX == 0) ? INT_MIN : nums1[partitionX - 1];
+        int minRightX = (partitionX == m) ? INT_MAX : nums1[partitionX];
+
+        int maxLeftY = (partitionY == 0) ? INT_MIN : nums2[partitionY - 1];
+        int minRightY = (partitionY == n) ? INT_MAX : nums2[partitionY];
+
+        if (maxLeftX <= minRightY && maxLeftY <= minRightX) {
+            if ((m + n) % 2 == 1) return max(maxLeftX, maxLeftY);
+            else return (max(maxLeftX, maxLeftY) + min(minRightX, minRightY)) / 2.0;
+        }
+        else if (maxLeftX > minRightY) {
+            right = partitionX - 1;  // 移動左邊界
+        }
+        else {
+            left = partitionX + 1;  // 移動右邊界
+        }
+    }
+    return -1;  // 不應該執行到這裡 
+}
+#pragma endregion
+#pragma endregion
+
+
 
 
 
