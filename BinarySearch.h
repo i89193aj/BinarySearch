@@ -100,10 +100,11 @@ public:
     int BinarySearch_2_410(std::vector<int>& nums, int k);
     int DP_410(std::vector<int>& nums, int k);
 
-    double Leetcode_Sol_4(std::vector<int>& nums1, std::vector<int>& nums2, int _solution);//*****
+    double Leetcode_Sol_4(std::vector<int>& nums1, std::vector<int>& nums2, int _solution);//**********
     double MergeSortOfDivideandConquer_4(std::vector<int>& nums1, std::vector<int>& nums2);
     double TwoPointer_4(std::vector<int>& nums1, std::vector<int>& nums2);
     double BinarySearch_4(std::vector<int>& nums1, std::vector<int>& nums2);
+    double MyBinarySearch_4(std::vector<int>& nums1, std::vector<int>& nums2);
 
 
 

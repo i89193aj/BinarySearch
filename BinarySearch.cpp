@@ -1090,34 +1090,93 @@ double BinarySearch::TwoPointer_4(std::vector<int>& nums1, vector<int>& nums2) {
 }
 
 double BinarySearch::BinarySearch_4(std::vector<int>& nums1, vector<int>& nums2) {
-    if (nums1.size() > nums2.size()) return BinarySearch_4(nums2, nums1);
+    if (nums1.size() > nums2.size())
+        return BinarySearch_4(nums2, nums1); // 確保 nums1 長度較小
 
     int m = nums1.size(), n = nums2.size();
-    int left = 0, right = m, partitionX;
+    int left = 0, right = m, halfLen = (m + n + 1) / 2;
 
     while (left <= right) {
-        partitionX = left + (right - left) / 2;
-        int partitionY = (m + n + 1) / 2 - partitionX;
+        int i = left + (right - left) / 2;
+        int j = halfLen - i;
 
-        int maxLeftX = (partitionX == 0) ? INT_MIN : nums1[partitionX - 1];
-        int minRightX = (partitionX == m) ? INT_MAX : nums1[partitionX];
+        int nums1Left = (i == 0) ? INT_MIN : nums1[i - 1];
+        int nums1Right = (i == m) ? INT_MAX : nums1[i];
+        int nums2Left = (j == 0) ? INT_MIN : nums2[j - 1];
+        int nums2Right = (j == n) ? INT_MAX : nums2[j];
 
-        int maxLeftY = (partitionY == 0) ? INT_MIN : nums2[partitionY - 1];
-        int minRightY = (partitionY == n) ? INT_MAX : nums2[partitionY];
+        if (nums1Left <= nums2Right && nums2Left <= nums1Right) {
+            if ((m + n) % 2 == 1)
+                return max(nums1Left, nums2Left); // 奇數情況
 
-        if (maxLeftX <= minRightY && maxLeftY <= minRightX) {
-            if ((m + n) % 2 == 1) return max(maxLeftX, maxLeftY);
-            else return (max(maxLeftX, maxLeftY) + min(minRightX, minRightY)) / 2.0;
+            return (max(nums1Left, nums2Left) + min(nums1Right, nums2Right)) / 2.0; // 偶數情況
         }
-        else if (maxLeftX > minRightY) {
-            right = partitionX - 1;  // 移動左邊界
+        else if (nums1Left > nums2Right) {
+            right = i - 1; // 移動 i 向左
         }
         else {
-            left = partitionX + 1;  // 移動右邊界
+            left = i + 1; // 移動 i 向右
         }
     }
-    return -1;  // 不應該執行到這裡 
+
+    return -1; // 不可能執行到這裡  
 }
+
+double BinarySearch::MyBinarySearch_4(std::vector<int>& nums1, vector<int>& nums2) {
+    if (nums1.size() > nums2.size())
+        return MyBinarySearch_4(nums2, nums1);
+
+    int leftLen = 0, rightLen = nums1.size();//nums1.size() - 1;
+    int halfLen = (nums1.size() + nums2.size() + 1) >> 1;
+
+    while (leftLen <= rightLen) {
+        //切割位置(當下的位置會分去右邊nums2)
+        int num1cut = (leftLen + rightLen) >> 1;
+        int num2cut = halfLen - num1cut; //對於切割點來說，左半數量>=右半數量
+
+        int num1Left = num1cut == 0 ? INT_MIN : nums1[num1cut - 1];
+        int num1Right = num1cut == nums1.size() ? INT_MAX : nums1[num1cut];
+        int num2Left = num2cut == 0 ? INT_MIN : nums2[num2cut - 1];
+        int num2Right = num2cut == nums2.size() ? INT_MAX : nums2[num2cut];
+
+        if (num1Left > num2Right) {
+            rightLen = num1cut - 1;
+        }
+        else {
+            if (num1Right < num2Left)
+                leftLen = num1cut + 1;
+            else {
+                return (nums1.size() + nums2.size() & 1) == 1 ? max(num1Left, num2Left) :
+                    (max(num1Left, num2Left) + min(num1Right, num2Right)) / 2.0;//他回傳的是double 不能用>>1
+                //右邊切割過去左邊的小中值還不知道哪一個大
+            }
+        }
+    }
+
+    return -1;//不可能跑到這裡
+
+    #pragma region 說明
+    /*
+       第一：切割說明
+        nums1 = [1, 3, 8, 9] | [15]
+        nums2 = [7, 11] | [18, 19, 21, 25]
+        條件：
+        1.左邊數量>=右邊數量(因為最後是用小中值回傳)
+        2.因為有奇偶關係，然後你的index又都是用"長度"去分，也就是大中值，所以：
+          奇數：小中值 ， 偶數： 小中值 + 大中值 的平均
+
+        第二：
+            type說明：
+            因為他是回傳double，所以不能用>>1運算，2.0 => int 跟 double 是隱性轉換
+
+        第三：
+            我們要減少時間複雜度的運算，加上當我們以nums1作為BinarySearch的標準時，我們會把較短的數組放置nums1
+            ex：if (nums1.size() > nums2.size()) return MyBinarySearch_4(nums2, nums1);
+    */  
+    #pragma endregion
+
+}
+
 #pragma endregion
 #pragma endregion
 
